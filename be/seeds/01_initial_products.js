@@ -178,40 +178,25 @@ const allProducts = [
  * @returns { Promise<void> }
  */
 export async function seed(knex) {
-  await knex("products").del();
+  const existing = await knex("products").first();
 
-  const productsToInsert = allProducts.map((product) => {
-    const {
-      id,
-      name,
-      category,
-      brand,
-      price,
-      originalPrice,
-      quantity,
-      imageUrl,
-      images,
-      sizes,
-      colors,
-    } = product;
+  if (existing) return;
 
-    const safeQuantity = quantity ?? 0;
-
-    return {
-      id,
-      name,
-      category,
-      brand,
-      price,
-      originalPrice: originalPrice ?? null,
-      quantity: safeQuantity,
-      status: safeQuantity > 0 ? "In stock" : "Out of stock",
-      imageUrl: imageUrl ?? null,
-      images: JSON.stringify(images ?? []),
-      sizes: JSON.stringify(sizes ?? []),
-      colors: JSON.stringify(colors ?? []),
-    };
-  });
+  const productsToInsert = allProducts.map((product) => ({
+    id: product.id,
+    name: product.name,
+    category: product.category,
+    brand: product.brand,
+    price: product.price,
+    originalPrice: product.originalPrice ?? null,
+    quantity: product.quantity ?? 0,
+    status: (product.quantity ?? 0) > 0 ? "In stock" : "Out of stock",
+    imageUrl: product.imageUrl ?? null,
+    images: JSON.stringify(product.images ?? []),
+    sizes: JSON.stringify(product.sizes ?? []),
+    colors: JSON.stringify(product.colors ?? []),
+  }));
 
   await knex("products").insert(productsToInsert);
 }
+
