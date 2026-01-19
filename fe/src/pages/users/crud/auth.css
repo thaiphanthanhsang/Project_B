@@ -1,0 +1,185 @@
+body {
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  background-color: #f9f9f9;
+}
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 15px;
+  min-height: calc(100vh - 160px);
+}
+
+.auth-card {
+  max-width: 450px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eee;
+  text-align: center;
+}
+
+.auth-card h2 {
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.auth-card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.auth-card p a {
+  color: #4caf50;
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-card p a:hover {
+  color: #45a049;
+  text-decoration: underline;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 14px 16px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  color: #1a1a1a;
+  background: #fdfdfd;
+  transition: all 0.2s ease;
+}
+
+.auth-card input:focus {
+  outline: none;
+  border-color: #4caf50;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.25);
+}
+
+.auth-card button {
+  width: 100%;
+  background: #4caf50;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 15px;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px -5px rgba(76, 175, 80, 0.5);
+}
+
+.auth-card button:hover:not(:disabled) {
+  background: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px -5px rgba(76, 175, 80, 0.7);
+}
+
+.auth-card button:disabled {
+  background: #555;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.auth-error-message {
+  color: #dc3545;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 12px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+}
+
+.auth-success-message {
+  color: #1a5c2f;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 12px;
+  background-color: #dff0d8;
+  border: 1px solid #d0e9c6;
+  border-radius: 5px;
+}
+
+.auth-card.profile-card {
+  max-width: 600px;
+  text-align: left;
+}
+
+.profile-card h2 {
+  text-align: center;
+}
+
+.profile-view p {
+  font-size: 1rem;
+  color: #1a1a1a;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 14px;
+  display: flex;
+}
+.profile-view p strong {
+  display: inline-block;
+  width: 140px;
+  color: #555;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.profile-form label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  color: #1a1a1a;
+}
+
+.profile-form input {
+  margin: 0;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.auth-card button.btn-secondary {
+  background: #555;
+  box-shadow: none;
+}
+.auth-card button.btn-secondary:hover:not(:disabled) {
+  background: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px -5px rgba(0, 0, 0, 0.2);
+}

@@ -1,0 +1,76 @@
+.section_pickleball {
+  background: #f8f9fa;
+}
+
+.section_pickleball .title_modules h2 {
+  font-size: 24px;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.section_pickleball .title_modules h2 span {
+  background: linear-gradient(90deg, #ff6a00, #ee0979);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section_pickleball .title_modules h2::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 3px;
+  background: #ff6a00;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+/* Card */
+.pickle-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pickle-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  transition: transform 0.4s ease;
+  display: block;
+}
+
+.pickle-card:hover img {
+  transform: scale(1.1);
+}
+
+.pickle-card .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 14px;
+}
+
+.pickle-card:hover .overlay {
+  opacity: 1;
+}
+
+.pickle-card .overlay p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+}

@@ -1,0 +1,110 @@
+:root {
+  --product-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --product-card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
+  --product-border-radius: 12px;
+  --product-accent-color: #007bff;
+  --product-price-color: #d90000;
+  --transition-speed: 0.3s ease;
+}
+
+.product-page-container {
+  padding: 40px 20px;
+  max-width: 1300px;
+  margin: 30px auto 0 auto;
+  background: #f9fafc;
+  border-radius: 12px;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.product-page-title {
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 2rem;
+  padding-bottom: 10px;
+  color: #222;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.product-page-title::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 3px;
+  background: #007bff;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  background: #ffffff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.product-card-body {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-card-name {
+  font-size: 14px;
+  margin: 5px 0;
+  color: #333;
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.product-card-price {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #007bff;
+  margin-top: 5px;
+}
+
+.no-products-message {
+  text-align: center;
+  color: #777;
+  grid-column: 1 / -1;
+  font-style: italic;
+  padding: 3rem 0;
+}

@@ -1,0 +1,106 @@
+.section_banner {
+  padding: 60px 0;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+}
+
+.title_modules {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+.title_modules h2 a {
+  text-decoration: none;
+}
+
+.title_modules h2 {
+  font-size: 24px;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.title_modules h2 span {
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title_modules h2::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 3px;
+  background: #007bff;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+/* Card */
+.snip_banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  margin-bottom: 30px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.snip_banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.snip_banner:hover img {
+  transform: scale(1.1);
+}
+
+/* Overlay Gradient */
+.snip_banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.snip_banner:hover::after {
+  opacity: 1;
+}
+
+/* Content Banner */
+.content_banner {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
+}
+
+.content_banner p {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.snip_banner:hover .content_banner p {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Clickable overlay */
+.overlay_link {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}

@@ -1,0 +1,180 @@
+/* Background tổng thể */
+.shop_profile {
+  padding: 100px 0;
+  background: linear-gradient(135deg, #f9f9f9, #f0f3f5);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hiệu ứng gradient mờ phía sau */
+.shop_profile::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 107, 107, 0.4),
+    transparent 70%
+  );
+  filter: blur(60px);
+  z-index: 0;
+}
+
+.profile_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* --- IMAGE --- */
+.profile_image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.image_wrap {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeUp 1s ease forwards;
+}
+
+.image_wrap img {
+  width: 100%;
+  max-width: 480px;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.image_wrap:hover img {
+  transform: scale(1.08);
+}
+
+.image_overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.image_wrap:hover .image_overlay {
+  opacity: 1;
+}
+
+/* --- CONTENT --- */
+.profile_content {
+  flex: 1;
+  min-width: 300px;
+  animation: fadeRight 1s ease forwards;
+  opacity: 0;
+}
+
+.profile_content h2 {
+  font-size: 2.5rem;
+  line-height: 1.3;
+  margin-bottom: 20px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #ff6b6b, #f94d6a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.profile_content p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 25px;
+}
+
+.profile_content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px 0;
+}
+
+.profile_content li {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  padding-left: 28px;
+  position: relative;
+  color: #333;
+}
+
+.profile_content li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #27ae60;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* --- Button --- */
+.btn_shop {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  background: linear-gradient(90deg, #ff6b6b, #f94d6a);
+  color: #fff;
+  transition: all 0.4s ease;
+  box-shadow: 0 5px 18px rgba(249, 77, 106, 0.4);
+}
+
+.btn_shop:hover {
+  background: linear-gradient(90deg, #f94d6a, #ff6b6b);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(249, 77, 106, 0.6);
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .profile_wrapper {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile_content h2 {
+    font-size: 2rem;
+  }
+
+  .profile_content p {
+    font-size: 1rem;
+  }
+}

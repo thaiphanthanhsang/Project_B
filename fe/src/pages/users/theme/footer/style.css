@@ -1,0 +1,100 @@
+.popup_gio_hang {
+  position: fixed;
+  left: 20px;
+  bottom: 40px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #2d3436, #636e72);
+  padding: 8px 16px;
+  border-radius: 40px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+}
+
+.popup_gio_hang:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(135deg, #00b894, #00cec9);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.popup_gio_hang img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #fff;
+  padding: 5px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.popup_gio_hang:hover img {
+  transform: rotate(10deg) scale(1.1);
+}
+
+.popup_gio_hang .gio_hang_text {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.popup_gio_hang .count_item_pr {
+  font-weight: 700;
+  color: #fffa65;
+}
+
+/* Hiệu ứng “rung nhẹ” khi hover */
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+
+  25% {
+    transform: rotate(3deg);
+  }
+
+  75% {
+    transform: rotate(-3deg);
+  }
+}
+
+.popup_gio_hang:hover img {
+  animation: shake 0.4s ease-in-out;
+}
+
+#goTopBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #007bff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  z-index: 1000;
+}
+
+#goTopBtn:hover {
+  transform: translateY(-4px);
+  background: #fff;
+  color: #007bff;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+#goTopBtn.show {
+  display: block;
+}

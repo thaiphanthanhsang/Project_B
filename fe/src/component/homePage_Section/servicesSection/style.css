@@ -1,0 +1,94 @@
+/* serviceSection.css */
+
+/* nền & padding ngoài cùng */
+.section_services {
+  background: #f8f9fa;
+  padding: 40px 0;
+}
+
+/* container trung tâm (nếu cần giới hạn chiều rộng) */
+.section_services .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+/* --- Buộc promo-box dùng grid (override Bootstrap .row) --- */
+/* dùng selector cụ thể hơn và !important để đảm bảo không bị ghi đè */
+.section_services .promo-box {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-left: 0;
+  margin-right: 0;
+  align-items: stretch;
+}
+
+/* Nếu bạn vẫn dùng các thẻ có class col-*, reset padding/flex để ko làm hỏng grid */
+.section_services .promo-box > [class*="col-"] {
+  padding: 0;
+  width: auto;
+  flex: none;
+  box-sizing: border-box;
+}
+
+/* Card (promo-item) — làm cao bằng nhau, căn giữa nội dung */
+.section_services .promo-item {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+/* hover effect nghệ */
+.section_services .promo-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* icon */
+.section_services .promo-item .icon img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+/* icon hover */
+.section_services .promo-item:hover .icon img {
+  transform: scale(1.12) rotate(6deg);
+}
+
+/* text */
+.section_services .promo-item .info {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.3;
+}
+
+.section_services .promo-item .info span {
+  color: #007bff;
+  font-weight: 700;
+}
+
+/* Responsive: tablet 2 cột, mobile 1 cột */
+@media (max-width: 992px) {
+  .section_services .promo-box {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .section_services .promo-box {
+    grid-template-columns: 1fr;
+  }
+}

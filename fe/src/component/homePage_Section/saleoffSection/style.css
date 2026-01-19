@@ -1,0 +1,106 @@
+.section_saleoff {
+  background: #f9fafc;
+  padding: 40px 20px;
+  border-radius: 12px;
+  margin-top: 30px;
+}
+.section_saleoff .title_modules h2 a {
+  text-decoration: none;
+}
+
+.section_saleoff .title_modules h2 {
+  font-size: 24px;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.section_saleoff .title_modules h2 span {
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section_saleoff .title_modules h2::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 3px;
+  background: #007bff;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.saleoff-swiper {
+  padding-bottom: 40px; /* chừa chỗ cho pagination */
+}
+
+.saleoff-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.saleoff-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.saleoff-card:hover img {
+  transform: scale(1.05);
+}
+
+.saleoff-card .overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 0 0 10px 10px;
+}
+
+.saleoff-card:hover .overlay {
+  opacity: 1;
+}
+
+/* Nút điều hướng Swiper */
+.saleoff-swiper .swiper-button-next,
+.saleoff-swiper .swiper-button-prev {
+  color: #333;
+  background: #fff;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.saleoff-swiper .swiper-button-next:hover,
+.saleoff-swiper .swiper-button-prev:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+/* Pagination */
+.saleoff-swiper .swiper-pagination-bullet {
+  background: #ccc;
+  opacity: 0.8;
+}
+
+.saleoff-swiper .swiper-pagination-bullet-active {
+  background: #007bff;
+  opacity: 1;
+}

@@ -1,0 +1,84 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.section_slider {
+  position: relative;
+  width: 100%;
+  padding: 30px 30px; /* cách 30px mỗi bên */
+  box-sizing: border-box;
+}
+
+.section_slider .swiper {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Swiper container full width */
+.section_slider .swiper {
+  width: 100%;
+  height: 100%;
+}
+
+/* Slide */
+.section_slider .swiper-slide {
+  position: relative;
+  text-align: center;
+  background: #000; /* màu nền khi ảnh chưa load */
+}
+
+.section_slider .swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* đảm bảo ảnh phủ đầy mà không méo */
+  border-radius: 10px;
+  transition: transform 0.5s ease;
+}
+
+/* Zoom nhẹ khi hover */
+.section_slider .swiper-slide:hover img {
+  transform: scale(1.03);
+}
+
+/* Nút điều hướng */
+.section_slider .swiper-button-next,
+.section_slider .swiper-button-prev {
+  color: #fff;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+.section_slider .swiper-button-next:hover,
+.section_slider .swiper-button-prev:hover {
+  background: rgba(0, 123, 255, 0.85);
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Pagination (chấm tròn) */
+.section_slider .swiper-pagination-bullet {
+  background: #fff;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.section_slider .swiper-pagination-bullet-active {
+  background: #007bff;
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Responsive: giữ tỷ lệ banner */
+.section_slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 1; /* tỷ lệ gần giống 1920x640 */
+  overflow: hidden;
+}

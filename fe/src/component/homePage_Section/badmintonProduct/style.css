@@ -1,0 +1,78 @@
+.section_badminton {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+}
+
+.section_badminton .title_modules h2 {
+  font-size: 24px;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.section_badminton .title_modules h2 span {
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section_badminton .title_modules h2::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 3px;
+  background: #007bff;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+/* Card */
+.badminton-card {
+  display: block;
+  background: #fff;
+  border-radius: 12px;
+  text-align: center;
+  padding: 15px;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.badminton-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Image */
+.badminton-card .image-wrap {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.badminton-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  transition: transform 0.4s ease;
+}
+
+.badminton-card:hover img {
+  transform: scale(1.1);
+}
+
+/* Title */
+.badminton-card .title {
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  transition: color 0.3s ease;
+}
+
+.badminton-card:hover .title {
+  color: #007bff;
+}
