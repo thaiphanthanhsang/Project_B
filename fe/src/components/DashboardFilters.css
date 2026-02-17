@@ -1,0 +1,40 @@
+.dashboard-filters {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.date-presets button {
+  background: #f0f2f5;
+  border: 1px solid #dcdfe6;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.date-presets button:hover {
+  background: #e6e8eb;
+  border-color: #c0c4cc;
+}
+
+input[type="date"] {
+  padding: 6px 10px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  font-size: 14px;
+}

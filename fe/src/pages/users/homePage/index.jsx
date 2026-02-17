@@ -6,6 +6,7 @@ import SaleoffSection from "../../../component/homePage_Section/saleoffSection";
 import NewProductSection from "../../../component/homePage_Section/newproductSection";
 import ServiceSection from "../../../component/homePage_Section/servicesSection";
 import SliderSection from "../../../component/homePage_Section/sliderSection";
+import BestSellers from "../../../component/homePage_Section/bestSellers/BestSellers";
 
 const HomePage = () => {
   return (
@@ -13,6 +14,7 @@ const HomePage = () => {
       <SliderSection />
       <ServiceSection />
       <NewProductSection />
+      <BestSellers />
       <SaleoffSection />
       <BadmintonProduct />
       <PickleballSection />

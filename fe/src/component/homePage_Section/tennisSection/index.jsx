@@ -4,10 +4,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "./style.css";
-
 import { Link } from "react-router-dom";
-
 import { ROUTERS } from "../../../utils/router";
 
 const newsList = [
@@ -64,60 +61,59 @@ const newsList = [
 
 const News = () => {
   return (
-    <section className="section_blog">
-      <div className="container">
-        <div className="title_modules">
-          <h2>
-            <Link to={`/${ROUTERS.USER.NEWS}`} title="Tin tức mới">
-              <span>News</span>
-            </Link>
-          </h2>
+    <section className="py-12 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 uppercase tracking-wide">
+                <Link to={`/${ROUTERS.USER.NEWS}`} className="hover:text-blue-600 transition-colors">
+                    Latest News
+                </Link>
+            </h2>
+            <div className="w-16 h-1 bg-blue-500 mx-auto mt-2 rounded-full"></div>
         </div>
 
-        <div className="block-blog">
-          <Swiper
+        <Swiper
             modules={[Navigation, Pagination]}
             navigation
-            pagination={{ clickable: true }}
-            spaceBetween={20}
-            grabCursor={true}
+            pagination={{ clickable: true, dynamicBullets: true }}
+            spaceBetween={24}
             breakpoints={{
               0: { slidesPerView: 1 },
               768: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
             }}
-            className="blog-swiper"
+            className="pb-12"
           >
             {newsList.map((news) => (
-              <SwiperSlide key={news.id}>
-                <div className="item-blog">
-                  <div className="block-thumb">
-                    <Link className="thumb" to={news.link} title={news.title}>
-                      <img
-                        src={news.img}
-                        alt={news.title}
-                        width="400"
-                        height="240"
-                        loading="lazy"
-                      />
-                    </Link>
-                  </div>
-                  <div className="block-content">
-                    <h3>
+              <SwiperSlide key={news.id} className="pb-10"> {/* Padding bottom for pagination */}
+                <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col border border-gray-100">
+                  <Link to={news.link} className="block aspect-video overflow-hidden">
+                    <img
+                      src={news.img}
+                      alt={news.title}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </Link>
+                  <div className="p-5 flex flex-col flex-grow">
+                     <p className="text-xs text-gray-400 mb-2">{news.time}</p>
+                    <h3 className="font-bold text-gray-800 mb-3 text-lg line-clamp-2 hover:text-blue-600 transition-colors">
                       <Link to={news.link} title={news.title}>
                         {news.title}
                       </Link>
                     </h3>
-                    <p className="time-post">
-                      <span>{news.time}</span>
+                    
+                    <p className="text-gray-600 text-sm line-clamp-3 mb-4 flex-grow">
+                        {news.desc}
                     </p>
-                    <p className="justify">{news.desc}</p>
+                    <Link to={news.link} className="text-blue-600 font-medium text-sm hover:underline mt-auto">
+                        Read More →
+                    </Link>
                   </div>
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
-        </div>
       </div>
     </section>
   );

@@ -10,17 +10,8 @@ const AdminLayout = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // thêm state UI (KHÔNG ẢNH HƯỞNG CODE CŨ)
-  const [showNoti, setShowNoti] = useState(false);
-
-  // GIỮ NGUYÊN pendingOrders + BỔ SUNG notification
-  const {
-    pendingOrders,
-    setPendingOrders,
-    notifications,
-    unreadCount,
-    markAsRead
-  } = useAdminNotification();
+  // GIỮ NGUYÊN pendingOrders
+  const { pendingOrders, setPendingOrders } = useAdminNotification();
 
   /* ================= AUTH ================= */
   useEffect(() => {
@@ -32,7 +23,7 @@ const AdminLayout = () => {
 
     try {
       const parsed = JSON.parse(saved);
-      if (parsed.role !== "admin") {
+      if (!["admin", "superadmin"].includes(parsed.role)) {
         navigate(`/${ROUTERS.USER.HOME}`);
         return;
       }
@@ -53,7 +44,7 @@ const AdminLayout = () => {
       try {
         const res = await api.get("/admin/orders/pending/count");
         setPendingOrders(res.data.total || 0);
-      } catch { }
+      } catch {}
     };
 
     fetchPending();
@@ -75,15 +66,11 @@ const AdminLayout = () => {
           </li>
 
           <li>
-            <Link to={`/${ROUTERS.ADMIN.USER_MANAGEMENT}`}>
-              Users
-            </Link>
+            <Link to={`/${ROUTERS.ADMIN.USER_MANAGEMENT}`}>Users</Link>
           </li>
 
           <li>
-            <Link to={`/${ROUTERS.ADMIN.PRODUCT_MANAGEMENT}`}>
-              Products
-            </Link>
+            <Link to={`/${ROUTERS.ADMIN.PRODUCT_MANAGEMENT}`}>Products</Link>
           </li>
 
           <li>
@@ -96,54 +83,6 @@ const AdminLayout = () => {
           </li>
 
           {/* CHỈ THÊM – KHÔNG ẢNH HƯỞNG CÁI KHÁC */}
-          <li
-            className="noti-item"
-            onClick={() => setShowNoti(!showNoti)}
-          >
-            🔔 Notifications
-            {unreadCount > 0 && (
-              <span className="admin-badge red">{unreadCount}</span>
-            )}
-
-            {showNoti && (
-              <div className="noti-panel">
-                <div className="noti-header">
-                  <span >🔔 Thông báo</span>
-                  {unreadCount > 0 && (
-                    <span className="noti-count">{unreadCount} mới</span>
-                  )}
-                </div>
-
-                <div className="noti-list">
-                  {notifications.length === 0 && (
-                    <div className="noti-empty">Không có thông báo</div>
-                  )}
-
-                  {notifications.map((n) => (
-                    <div
-                      key={n.id}
-                      className={`noti-item-card ${!n.is_read ? "unread" : ""}`}
-                      onClick={() => markAsRead(n.id)}
-                    >
-                      <div className="noti-icon">
-                        {n.type === "cancel_request" ? "⚠️" : "📦"}
-                      </div>
-
-                      <div className="noti-content">
-                        <div className="noti-message">{n.message}</div>
-                        <div className="noti-time">
-                          {new Date(n.created_at).toLocaleString("vi-VN")}
-                        </div>
-                      </div>
-
-                      {!n.is_read && <span className="dot" />}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-          </li>
 
           <li className="divider" />
 

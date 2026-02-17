@@ -80,6 +80,7 @@ body {
   flex-grow: 1;
   align-items: center;
   width: 100%;
+  padding: 0 30px; /* Added padding to prevent overflow "tràn viền" */
 }
 
 .nav-links {

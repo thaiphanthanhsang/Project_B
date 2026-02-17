@@ -1,0 +1,16 @@
+
+import { pool } from "./db.js";
+
+async function checkSchema() {
+    try {
+        console.log("--- Checking Orders Schema ---");
+        const [columns] = await pool.query("DESCRIBE orders");
+        console.log(columns.map(c => `${c.Field} (${c.Type})`).join("\n"));
+    } catch (err) {
+        console.error("DEBUG ERROR:", err);
+    } finally {
+        await pool.end();
+    }
+}
+
+checkSchema();

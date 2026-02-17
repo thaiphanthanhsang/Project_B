@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import RouterCustom from "./router";
 import "./style/style.css";
+import "./style/neumorphism.css";
+import "./style/neumorphism.css";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 

@@ -8,7 +8,7 @@ const adminMiddleware = async (req, res, next) => {
       userId,
     ]);
 
-    if (rows.length === 0 || rows[0].role !== "admin") {
+    if (rows.length === 0 || (rows[0].role !== "admin" && rows[0].role !== "superadmin")) {
       return res
         .status(403)
         .json({ message: "Access denied. Admin privileges required." });

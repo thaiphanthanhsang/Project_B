@@ -10,15 +10,16 @@ export const ROUTERS = {
     LOGIN: "login",
     REGISTER: "register",
     CHECKOUT: "checkout",
-    SHOPPINGCART: "gio-hang",
+    SHOPPINGCART: "shopping-cart",
     SEARCH: "search",
-    MY_ORDERS: "orders"
-
+    MY_ORDERS: "orders",
+    FORGOT_PASSWORD: "forgot-password",
   },
   ADMIN: {
     DASHBOARD: "admin",
     USER_MANAGEMENT: "admin/users",
     PRODUCT_MANAGEMENT: "admin/products",
     ORDER_MANAGEMENT: "admin/orders",
+    NOTIFICATIONS: "admin/notifications",
   },
 };

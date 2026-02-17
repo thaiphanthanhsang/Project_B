@@ -220,7 +220,7 @@ router.get("/public", async (req, res) => {
   try {
     const { category, brand } = req.query;
     const page = Number(req.query.page || 1);
-    const limit = 12;
+    const limit = Number(req.query.limit || 12);
     const offset = (page - 1) * limit;
 
     let where = " WHERE quantity > 0 ";
@@ -240,8 +240,14 @@ router.get("/public", async (req, res) => {
       params
     );
 
+    let orderBy = "ORDER BY created_at DESC";
+    const sort = req.query.sort;
+    if (sort === "hot") {
+      orderBy = "ORDER BY (views * 0.3 + sold_count * 0.7) DESC";
+    }
+
     const [rows] = await pool.query(
-      `SELECT * FROM products${where} LIMIT ? OFFSET ?`,
+      `SELECT * FROM products${where} ${orderBy} LIMIT ? OFFSET ?`,
       [...params, limit, offset]
     );
 
@@ -252,7 +258,7 @@ router.get("/public", async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server error");
+    res.status(500).send("Server error: " + err.message);
   }
 });
 
@@ -261,6 +267,28 @@ router.get("/search", async (req, res) => {
   try {
     const q = req.query.q?.trim().toLowerCase();
     if (!q) return res.json({ products: [], totalPages: 0, currentPage: 1 });
+
+    // Log search keyword
+    const userId = req.user?.id || null; // Might be undefined if public route, verify authMiddleware usage or handle gracefully
+    // Since this public route might not use authMiddleware, req.user might be missing. 
+    // We'll leave user_id null for now or check if we want to parse token optionally.
+    // For simplicity, just log keyword.
+
+    // Log search keyword (Debounced: 5s) - ATOMIC QUERY to prevent race conditions
+    try {
+      await pool.query(`
+        INSERT INTO search_logs (keyword, created_at)
+        SELECT ?, NOW()
+        FROM DUAL
+        WHERE NOT EXISTS (
+          SELECT 1 FROM search_logs 
+          WHERE keyword = ? 
+          AND created_at >= DATE_SUB(NOW(), INTERVAL 5 SECOND)
+        )
+      `, [q, q]);
+    } catch (logErr) {
+      console.error("Logging search failed:", logErr);
+    }
 
     const page = Number(req.query.page || 1);
     const limit = 12;
@@ -304,6 +332,16 @@ router.get("/:id", async (req, res) => {
     if (!rows.length) {
       return res.status(404).json({ message: "Product not found" });
     }
+
+    // Increment views (Total)
+    await pool.query("UPDATE products SET views = views + 1 WHERE id = ?", [req.params.id]).catch(console.error);
+
+    // Record detailed view event for Trending Algorithm
+    // user_id is null for anonymous users since this is a public route
+    await pool.query(
+      "INSERT INTO product_views (product_id, user_id, created_at) VALUES (?, NULL, NOW())",
+      [req.params.id]
+    ).catch(console.error);
 
     res.json(parseProduct(rows[0]));
   } catch (err) {

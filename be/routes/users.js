@@ -65,6 +65,29 @@ router.put("/:id", [authMiddleware, adminMiddleware], async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
+    // --- SECURITY CHECK START ---
+    // Get current requester's role
+    const [requester] = await pool.query("SELECT role FROM users WHERE id = ?", [req.userId]);
+    const requesterRole = requester[0].role;
+
+    // Get target user's current role
+    const [targetUser] = await pool.query("SELECT role FROM users WHERE id = ?", [id]);
+    if (targetUser.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const targetRole = targetUser[0].role;
+
+    // 1. Prevent Admin from modifying Superadmin
+    if (requesterRole !== 'superadmin' && targetRole === 'superadmin') {
+      return res.status(403).json({ message: "Access denied. You cannot modify a Super Admin." });
+    }
+
+    // 2. Prevent Admin from promoting anyone to Superadmin
+    if (requesterRole !== 'superadmin' && role === 'superadmin') {
+      return res.status(403).json({ message: "Access denied. You cannot assign the Super Admin role." });
+    }
+    // --- SECURITY CHECK END ---
+
     await pool.query(
       "UPDATE users SET name = ?, email = ?, phone = ?, role = ? WHERE id = ?",
       [name, email, phone || null, role, id]
@@ -86,6 +109,28 @@ router.put("/:id", [authMiddleware, adminMiddleware], async (req, res) => {
 router.delete("/:id", [authMiddleware, adminMiddleware], async (req, res) => {
   try {
     const userId = req.params.id;
+    // Check role hierarchy
+    const [targetUser] = await pool.query("SELECT role FROM users WHERE id = ?", [userId]);
+
+    if (targetUser.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const targetRole = targetUser[0].role;
+
+    // Get current requester's role
+    const [requester] = await pool.query("SELECT role FROM users WHERE id = ?", [req.userId]);
+    const requesterRole = requester[0].role;
+
+    // Logic: 
+    // - Superadmin can delete anyone.
+    // - Admin can delete User.
+    // - Admin CANNOT delete Admin or Superadmin.
+
+    if (requesterRole !== 'superadmin' && (targetRole === 'admin' || targetRole === 'superadmin')) {
+      return res.status(403).json({ message: "Access denied. You cannot delete this user." });
+    }
+
     await pool.query("DELETE FROM users WHERE id = ?", [userId]);
     res.json({ message: "User deleted successfully" });
   } catch (err) {

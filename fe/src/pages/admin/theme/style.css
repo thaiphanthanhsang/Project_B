@@ -1,70 +1,77 @@
 :root {
-  --admin-bg: #f4f7f6;
-  --admin-sidebar-bg: #2c3e50;
-  --admin-sidebar-text: #ecf0f1;
-  --admin-sidebar-hover: #34495e;
-  --admin-pop-color: #1abc9c;
+  --admin-bg: #f9fafb; /* Gray-50 */
+  --admin-sidebar-bg: #ffffff;
+  --admin-sidebar-text: #4b5563; /* Gray-600 */
+  --admin-sidebar-hover: #f3f4f6; /* Gray-100 */
+  --admin-pop-color: #3b82f6; /* Blue-500 */
 
   --admin-content-bg: #ffffff;
-  --admin-border-color: #e1e8ed;
-  --admin-text-dark: #333;
-  --admin-text-light: #777;
-  --admin-danger-color: #e74c3c;
+  --admin-border-color: #e5e7eb; /* Gray-200 */
+  --admin-text-dark: #111827; /* Gray-900 */
+  --admin-text-light: #6b7280; /* Gray-500 */
+  --admin-danger-color: #ef4444; /* Red-500 */
 
-  --font-main: "Poppins", sans-serif;
-  --font-heading: "Montserrat", sans-serif;
+  --font-main: "Inter", sans-serif;
+  --font-heading: "Inter", sans-serif;
 }
 
 body {
   font-family: var(--font-main);
+  background-color: var(--admin-bg);
 }
 
 .admin-layout {
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 260px 1fr;
   min-height: 100vh;
 }
 
 .admin-sidebar {
   background-color: var(--admin-sidebar-bg);
   color: var(--admin-sidebar-text);
-  padding: 20px;
+  padding: 24px;
+  border-right: 1px solid var(--admin-border-color);
 }
 
 .admin-sidebar h3 {
   font-family: var(--font-heading);
-  text-align: center;
-  font-weight: 700;
-  margin-bottom: 30px;
-  letter-spacing: 0.5px;
+  text-align: left;
+  font-weight: 800;
+  margin-bottom: 40px;
+  font-size: 1.25rem;
+  color: var(--admin-text-dark);
+  padding-left: 12px;
 }
 
 .admin-sidebar ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .admin-sidebar ul li a {
-  display: block;
+  display: flex;
+  align-items: center;
   color: var(--admin-sidebar-text);
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
-  padding: 12px 15px;
-  border-radius: 6px;
-  margin-bottom: 5px;
-  transition: all 0.2s ease-in-out;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .admin-sidebar ul li a:hover {
   background-color: var(--admin-sidebar-hover);
-  transform: translateX(5px);
+  color: var(--admin-text-dark);
 }
 
 .admin-sidebar ul li a.active {
-  background-color: var(--admin-pop-color);
-  color: #fff;
+  background-color: #eff6ff; /* Blue-50 */
+  color: var(--admin-pop-color);
   font-weight: 600;
 }
 

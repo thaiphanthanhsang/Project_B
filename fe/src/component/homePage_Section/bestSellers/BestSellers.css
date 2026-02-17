@@ -1,0 +1,8 @@
+/* BestSellers.css - if any specific styles needed not covered by Tailwind */
+/* Tailwind handles most, but ensuring smooth grid spacing on mobile */
+@media (max-width: 640px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

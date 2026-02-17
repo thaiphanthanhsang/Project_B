@@ -53,6 +53,7 @@ const Footer = () => {
                 <div className="footer-logo mb-3">
                   <Link to={`/${ROUTERS.USER.HOME}`}>
                     <img
+                      className="rounded-full"
                       src="/logo.png"
                       alt="footer logo"
                       style={{ maxWidth: "150px" }}

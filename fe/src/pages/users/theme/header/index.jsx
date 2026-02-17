@@ -66,7 +66,7 @@ const Header = () => {
 
         <div className="logo">
           <Link to={`/${ROUTERS.USER.HOME}`} onClick={closeMenu}>
-            <img src="/logo.png" alt="Company Logo" />
+            <img src="/logo.png" alt="Company Logo" className="rounded-full" />
           </Link>
         </div>
 
@@ -111,7 +111,7 @@ const Header = () => {
             </>
           ) : (
             <>
-              {user.role === "admin" && (
+              {["admin", "superadmin"].includes(user.role) && (
                 <li>
                   <Link
                     to={`/${ROUTERS.ADMIN.DASHBOARD}`}
@@ -270,7 +270,7 @@ const Header = () => {
               </>
             ) : (
               <>
-                {user.role === "admin" && (
+                {["admin", "superadmin"].includes(user.role) && (
                   <li className="mobile-only">
                     <Link
                       to={`/${ROUTERS.ADMIN.DASHBOARD}`}

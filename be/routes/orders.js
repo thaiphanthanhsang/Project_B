@@ -1,92 +1,37 @@
 import express from "express";
-import { pool } from "../db.js";
+import { orderController } from "../controllers/orderController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 /**
- * GET /api/orders/my
+ * POST /api/orders
+ * Place a new order
  */
-router.get("/my", authMiddleware, async (req, res) => {
-    try {
-        const userId = req.userId;
-
-        const [orders] = await pool.query(
-            `
-            SELECT 
-                id,
-                total_price,
-                status,
-                created_at,
-                cancel_request,
-                cancel_by,
-                cancel_reason
-            FROM orders
-            WHERE user_id = ?
-            ORDER BY created_at DESC
-            `,
-            [userId]
-        );
-
-        res.json(orders);
-    } catch (err) {
-        console.error("Get my orders error:", err);
-        res.status(500).json({ message: "Server error" });
-    }
-});
+router.post("/", authMiddleware, orderController.placeOrder);
 
 /**
- * PUT /api/orders/:id/request-cancel
+ * GET /api/orders/my
+ * Get order history
  */
-router.put("/:id/request-cancel", authMiddleware, async (req, res) => {
-    const userId = req.userId;
-    const { reason } = req.body;
-    const orderId = req.params.id;
+router.get("/my", authMiddleware, orderController.getMyOrders);
 
-    try {
-        const [[order]] = await pool.query(
-            "SELECT * FROM orders WHERE id = ? AND user_id = ?",
-            [orderId, userId]
-        );
+/**
+ * GET /api/orders/:id
+ * Get order details
+ */
+router.get("/:id", authMiddleware, orderController.getOrderDetails);
 
-        if (!order) {
-            return res.status(404).json({ message: "Order not found" });
-        }
+/**
+ * PUT /api/orders/:id/cancel
+ * Cancel order (User triggers)
+ */
+router.put("/:id/cancel", authMiddleware, orderController.cancelOrder);
 
-        if (!["pending", "confirmed"].includes(order.status)) {
-            return res.status(400).json({ message: "Không thể yêu cầu hủy" });
-        }
-
-        // Đánh dấu yêu cầu hủy
-        await pool.query(
-            `
-            UPDATE orders
-            SET cancel_request = true,
-                cancel_by = 'user',
-                cancel_reason = ?
-            WHERE id = ?
-            `,
-            [reason || null, orderId]
-        );
-
-        // Thông báo admin
-        await pool.query(
-            `
-            INSERT INTO admin_notifications (order_id, type, message)
-            VALUES (?, ?, ?)
-            `,
-            [
-                orderId,
-                "cancel_request",
-                `Đơn #${orderId} có yêu cầu hủy. Lý do: ${reason || "Không có"}`
-            ]
-        );
-
-        res.json({ message: "Đã gửi yêu cầu hủy, chờ admin xử lý" });
-    } catch (err) {
-        console.error("Request cancel error:", err);
-        res.status(500).json({ message: "Không thể gửi yêu cầu hủy" });
-    }
-});
+/**
+ * PUT /api/orders/:id/payment-status
+ * Update payment status (Webhook/Admin)
+ */
+router.put("/:id/payment-status", authMiddleware, orderController.updatePaymentStatus);
 
 export default router;

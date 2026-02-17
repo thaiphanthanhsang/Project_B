@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "../../utils/api.js";
 import UserFormModal from "./UserFormModal.jsx";
+import ConfirmationModal from "../../components/common/ConfirmationModal.jsx";
 
 const UserManagementPage = () => {
   const [users, setUsers] = useState([]);
@@ -11,6 +12,9 @@ const UserManagementPage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
 
   useEffect(() => {
     fetchUsers();
@@ -46,7 +50,7 @@ const UserManagementPage = () => {
     try {
       const response = await api.put(`/users/${userId}`, editFormData);
       setUsers(
-        users.map((user) => (user.id === userId ? response.data : user))
+        users.map((user) => (user.id === userId ? response.data : user)),
       );
       setEditingUserId(null);
     } catch (err) {
@@ -55,14 +59,22 @@ const UserManagementPage = () => {
     }
   };
 
-  const handleDelete = async (userId) => {
-    if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
-      try {
-        await api.delete(`/users/${userId}`);
-        setUsers(users.filter((user) => user.id !== userId));
-      } catch (err) {
-        alert("Xóa thất bại!");
-      }
+  const handleDeleteClick = (userId) => {
+    setUserToDelete(userId);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!userToDelete) return;
+    try {
+      await api.delete(`/users/${userToDelete}`);
+      setUsers(users.filter((user) => user.id !== userToDelete));
+    } catch (error) {
+      console.error(error);
+      alert("Xóa thất bại!");
+    } finally {
+      setDeleteModalOpen(false);
+      setUserToDelete(null);
     }
   };
 
@@ -178,7 +190,7 @@ const UserManagementPage = () => {
                       Sửa
                     </button>
                     <button
-                      onClick={() => handleDelete(user.id)}
+                      onClick={() => handleDeleteClick(user.id)}
                       className="btn-delete"
                     >
                       Xóa
@@ -196,6 +208,16 @@ const UserManagementPage = () => {
         onClose={() => setIsModalOpen(false)}
         user={currentUser}
         onSave={handleSaveUser}
+      />
+
+      <ConfirmationModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        title="Xóa người dùng"
+        message="Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác."
+        confirmText="Xóa"
+        cancelText="Hủy"
       />
     </div>
   );

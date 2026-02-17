@@ -15,7 +15,9 @@
     "express": "^4.18.2",
     "express-validator": "^6.14.3",
     "jsonwebtoken": "^9.0.0",
-    "mysql2": "^3.2.0"
+    "multer": "^2.0.2",
+    "mysql2": "^3.2.0",
+    "nodemailer": "^7.0.12"
   },
   "devDependencies": {
     "knex": "^3.1.0",

@@ -6,25 +6,30 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("currentUser");
+    // Check localStorage first, then sessionStorage
+    const savedUser = localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser");
     if (savedUser) {
       try {
         setUser(JSON.parse(savedUser));
       } catch (e) {
-        localStorage.clear();
+        localStorage.removeItem("currentUser");
+        sessionStorage.removeItem("currentUser");
       }
     }
   }, []);
 
-  const login = (userData, token) => {
-    localStorage.setItem("token", token);
-    localStorage.setItem("currentUser", JSON.stringify(userData));
+  const login = (userData, token, remember = true) => {
+    const storage = remember ? localStorage : sessionStorage;
+    storage.setItem("token", token);
+    storage.setItem("currentUser", JSON.stringify(userData));
     setUser(userData);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("currentUser");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("currentUser");
     setUser(null);
   };
 

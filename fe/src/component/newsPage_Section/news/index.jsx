@@ -1,12 +1,13 @@
 import { memo } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "./style.css";
+
 import { Link } from "react-router-dom";
+import { 
+    Clock, 
+    ChevronRight,
+    Search
+} from "lucide-react";
 import { ROUTERS } from "../../../utils/router";
+import smashfaster from "/src/assets/users/images/ulikeit/smashfaster.jpg";
 
 const newsList = [
   {
@@ -62,63 +63,153 @@ const newsList = [
 
 const News = () => {
   return (
-    <section className="section_blog">
-      <div className="container">
-        <div className="title_modules">
-          <h2>
-            <Link to={`/${ROUTERS.USER.NEWS}`} title="Tin tức mới">
-              <span>News</span>
-            </Link>
-          </h2>
+    <div className="bg-gray-50 min-h-screen py-12">
+      <div className="container mx-auto px-4">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 uppercase tracking-wide">
+                News & Blog
+            </h1>
+            <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
+                <span className="flex items-center"><Clock className="w-4 h-4 mr-2"/> Latest Updates</span>
+                <span className="flex items-center text-blue-600 font-medium">Badminton & Pickleball</span>
+            </div>
         </div>
 
-        <div className="block-blog">
-          <Swiper
-            modules={[Navigation, Pagination]}
-            navigation
-            pagination={{ clickable: true }}
-            spaceBetween={20}
-            grabCursor={true}
-            breakpoints={{
-              0: { slidesPerView: 1 },
-              768: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-            }}
-            className="blog-swiper"
-          >
-            {newsList.map((news) => (
-              <SwiperSlide key={news.id}>
-                <div className="item-blog">
-                  <div className="block-thumb">
-                    <Link className="thumb" to={news.link} title={news.title}>
-                      <img
+        <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
+          {/* ======= LEFT CONTENT: NEWS GRID ======= */}
+          <div className="w-full lg:w-3/4">
+             <div className="grid md:grid-cols-2 gap-8">
+                {newsList.map((news) => (
+                    <div
+                    key={news.id}
+                    className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 group flex flex-col"
+                    >
+                    <Link to={news.link} className="block overflow-hidden aspect-video relative">
+                        <img
                         src={news.img}
                         alt={news.title}
-                        width="400"
-                        height="240"
                         loading="lazy"
-                      />
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors"></div>
                     </Link>
-                  </div>
-                  <div className="block-content">
-                    <h3>
-                      <Link to={news.link} title={news.title}>
-                        {news.title}
-                      </Link>
-                    </h3>
-                    <p className="time-post">
-                      <span>{news.time}</span>
-                    </p>
-                    <p className="justify">{news.desc}</p>
-                  </div>
+                    
+                    <div className="p-6 flex-1 flex flex-col">
+                        <div className="flex items-center text-xs text-gray-400 mb-3 space-x-2">
+                             <Clock className="w-3 h-3" />
+                             <span>{news.time}</span>
+                        </div>
+                        
+                        <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                        <Link to={news.link} title={news.title}>
+                            {news.title}
+                        </Link>
+                        </h3>
+                        
+                        <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed text-sm flex-1">
+                            {news.desc}
+                        </p>
+                        
+                        <Link 
+                            to={news.link} 
+                            className="inline-flex items-center text-blue-600 font-bold hover:text-blue-700 hover:underline mt-auto"
+                        >
+                            Read more <ChevronRight className="w-4 h-4 ml-1" />
+                        </Link>
+                    </div>
+                    </div>
+                ))}
+            </div>
+            
+            {/* Pagination Placeholder (Visual Only) */}
+            <div className="mt-12 flex justify-center space-x-2">
+                <button className="w-10 h-10 rounded-lg bg-blue-600 text-white font-bold">1</button>
+                <button className="w-10 h-10 rounded-lg hover:bg-gray-200 text-gray-600 font-medium transition-colors">2</button>
+                <button className="w-10 h-10 rounded-lg hover:bg-gray-200 text-gray-600 font-medium transition-colors">3</button>
+                <span className="w-10 h-10 flex items-center justify-center text-gray-400">...</span>
+                <button className="w-10 h-10 rounded-lg hover:bg-gray-200 text-gray-600 font-medium transition-colors"><ChevronRight className="w-5 h-5"/></button>
+            </div>
+          </div>
+
+          {/* ======= RIGHT SIDEBAR ======= */}
+          <aside className="w-full lg:w-1/4 space-y-8">
+             {/* Search Widget */}
+             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Search</h3>
+                <div className="relative">
+                    <input 
+                        type="text" 
+                        placeholder="Search articles..." 
+                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none text-sm"
+                    />
+                    <Search className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+             </div>
+
+             {/* Categories */}
+             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span className="w-1 h-6 bg-blue-500 rounded-full mr-3"></span>
+                    Categories
+                </h3>
+                <nav className="space-y-1">
+                    {[
+                        { to: "/news/promotions", label: "Promotions", icon: "🏷" },
+                        { to: `/${ROUTERS.USER.NEWS}`, label: "Badminton News", icon: "🏸" },
+                        { to: "/news/training-tips", label: "Training Tips", icon: "💡" },
+                        { to: `/${ROUTERS.USER.PRODUCTS}`, label: "New Arrivals", icon: "🛍" },
+                    ].map((item, idx) => (
+                        <Link 
+                            key={idx}
+                            to={item.to} 
+                            className="flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all group"
+                        >
+                            <span className="mr-3 group-hover:scale-110 transition-transform">{item.icon}</span>
+                            <span className="font-medium">{item.label}</span>
+                            <ChevronRight className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </Link>
+                    ))}
+                </nav>
+             </div>
+
+             {/* Recommended Read */}
+             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span className="w-1 h-6 bg-blue-500 rounded-full mr-3"></span>
+                    Trending Now
+                </h3>
+                <div className="space-y-6">
+                     {[
+                        { img: "/badmintonProduct/rackets.jpg", title: "Beginner's Guide to Rackets", date: "Sep 29", link: "/news" },
+                        { img: "/badmintonProduct/shoes.jpg", title: "Top 5 Shoes for Speed", date: "Sep 10", link: "/news" },
+                        { img: smashfaster, title: "Smash Faster in 3 Steps", date: "Aug 02", link: "/news" }
+                    ].map((item, idx) => (
+                        <Link key={idx} to={item.link} className="flex gap-4 group">
+                             <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden relative">
+                                <img 
+                                    src={item.img} 
+                                    alt={item.title} 
+                                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                                />
+                                <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors"></div>
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-800 line-clamp-2 mb-2 group-hover:text-blue-600 transition-colors">
+                                    {item.title}
+                                </h4>
+                                <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
+                                    {item.date}
+                                </span>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+             </div>
+          </aside>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
-
 export default memo(News);

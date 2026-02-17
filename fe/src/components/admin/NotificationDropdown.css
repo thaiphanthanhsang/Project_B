@@ -1,0 +1,21 @@
+
+/* Notification Dropdown Custom Styles */
+/* Assuming Tailwind is available, but adding some fallback/specifics */
+.relative {
+    position: relative;
+}
+
+/* Scrollbar styling for notification list */
+.max-h-96::-webkit-scrollbar {
+    width: 6px;
+}
+.max-h-96::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.max-h-96::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+.max-h-96::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}

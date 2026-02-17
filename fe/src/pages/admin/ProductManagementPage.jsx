@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "../../utils/api.js";
 import ProductFormModal from "./ProductFormModal.jsx";
+import ConfirmationModal from "../../components/common/ConfirmationModal.jsx";
 
 const ProductManagementPage = () => {
   const [products, setProducts] = useState([]);
@@ -8,6 +9,9 @@ const ProductManagementPage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
 
   useEffect(() => {
     fetchProducts();
@@ -24,14 +28,22 @@ const ProductManagementPage = () => {
     setLoading(false);
   };
 
-  const handleDelete = async (productId) => {
-    if (window.confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
-      try {
-        await api.delete(`/products/${productId}`);
-        setProducts(products.filter((p) => p.id !== productId));
-      } catch (err) {
-        alert("Xóa thất bại!");
-      }
+  const handleDeleteClick = (productId) => {
+    setProductToDelete(productId);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!productToDelete) return;
+    try {
+      await api.delete(`/products/${productToDelete}`);
+      setProducts(products.filter((p) => p.id !== productToDelete));
+    } catch (err) {
+      console.error(err);
+      alert("Xóa thất bại!");
+    } finally {
+      setDeleteModalOpen(false);
+      setProductToDelete(null);
     }
   };
 
@@ -50,7 +62,7 @@ const ProductManagementPage = () => {
       setProducts([...products, savedProduct]);
     } else {
       setProducts(
-        products.map((p) => (p.id === savedProduct.id ? savedProduct : p))
+        products.map((p) => (p.id === savedProduct.id ? savedProduct : p)),
       );
     }
   };
@@ -99,7 +111,7 @@ const ProductManagementPage = () => {
                   Sửa
                 </button>
                 <button
-                  onClick={() => handleDelete(product.id)}
+                  onClick={() => handleDeleteClick(product.id)}
                   className="btn-delete"
                 >
                   Xóa
@@ -115,6 +127,16 @@ const ProductManagementPage = () => {
         onClose={() => setIsModalOpen(false)}
         product={currentProduct}
         onSave={handleSave}
+      />
+
+      <ConfirmationModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        title="Xóa sản phẩm"
+        message="Bạn có chắc chắn muốn xóa sản phẩm này? Hành động này không thể hoàn tác."
+        confirmText="Xóa"
+        cancelText="Hủy"
       />
     </div>
   );
