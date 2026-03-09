@@ -92,8 +92,8 @@ JWT_SECRET=matkhaubimatkhongaibiethet
 
 ```bash
 # Trong terminal BE
-npm run migrate         # chạy migrations tạo bảng
-npx knex seed:run       # nạp dữ liệu mẫu (products, menu...)
+npx knex migrate:latest --knexfile knexfile.js  # chạy migrations tạo/cập nhật bảng
+npx knex seed:run --knexfile knexfile.js        # nạp dữ liệu mẫu (products, menu...)
 ```
 
 **Sau khi chạy xong, CSDL của bạn đã sẵn sàng.**

@@ -18,17 +18,21 @@ export async function up(knex) {
     });
 
     // 2. Data Migration: Copy legacy data to new standard columns if new ones are empty
-    await knex.raw(`
-    UPDATE orders 
-    SET address = shipping_address 
-    WHERE (address IS NULL OR address = '') AND shipping_address IS NOT NULL
-  `);
+    if (hasShippingAddress) {
+        await knex.raw(`
+        UPDATE orders 
+        SET address = shipping_address 
+        WHERE (address IS NULL OR address = '') AND shipping_address IS NOT NULL
+      `);
+    }
 
-    await knex.raw(`
-    UPDATE orders 
-    SET phone = shipping_phone 
-    WHERE (phone IS NULL OR phone = '') AND shipping_phone IS NOT NULL
-  `);
+    if (hasShippingPhone) {
+        await knex.raw(`
+        UPDATE orders 
+        SET phone = shipping_phone 
+        WHERE (phone IS NULL OR phone = '') AND shipping_phone IS NOT NULL
+      `);
+    }
 }
 
 /**
