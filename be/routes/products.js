@@ -2,6 +2,7 @@ import express from "express";
 import { pool } from "../db.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import adminMiddleware from "../middleware/adminMiddleware.js";
+import { logActivity } from "../utils/logger.js";
 
 const router = express.Router();
 
@@ -139,6 +140,8 @@ router.post("/", [authMiddleware, adminMiddleware], async (req, res) => {
       [newId]
     );
 
+    await logActivity(req.userId, "Created Product", `Product: ${name} (ID: ${newId})`);
+
     res.status(201).json(parseProduct(rows[0]));
   } catch (err) {
     console.error(err);
@@ -193,6 +196,8 @@ router.put("/:id", [authMiddleware, adminMiddleware], async (req, res) => {
       [id]
     );
 
+    await logActivity(req.userId, "Updated Product", `Product: ${name} (ID: ${id})`);
+
     res.json(parseProduct(rows[0]));
   } catch (err) {
     console.error(err);
@@ -203,7 +208,11 @@ router.put("/:id", [authMiddleware, adminMiddleware], async (req, res) => {
 // Delete product
 router.delete("/:id", [authMiddleware, adminMiddleware], async (req, res) => {
   try {
-    await pool.query("DELETE FROM products WHERE id = ?", [req.params.id]);
+    const productId = req.params.id;
+    await pool.query("DELETE FROM products WHERE id = ?", [productId]);
+
+    await logActivity(req.userId, "Deleted Product", `Product ID: ${productId}`);
+
     res.json({ message: "Product deleted successfully" });
   } catch (err) {
     console.error(err);

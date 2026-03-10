@@ -36,7 +36,7 @@ const CustomTooltip = ({ active, payload, label }) => {
           <div className="h-10 w-1 bg-indigo-500 rounded-full"></div>
           <div>
             <p className="text-2xl font-bold text-slate-900">
-              {new Intl.NumberFormat("vi-VN", {
+              {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "VND",
               }).format(payload[0].value)}
@@ -126,7 +126,7 @@ const RevenueChart = ({ data = [] }) => {
             </p>
             <div className="flex items-center gap-4">
               <h3 className="text-4xl font-extrabold text-slate-900 tracking-tight">
-                {new Intl.NumberFormat("vi-VN", {
+                {new Intl.NumberFormat("en-US", {
                   style: "decimal",
                   maximumFractionDigits: 0,
                 }).format(totalRevenue)}

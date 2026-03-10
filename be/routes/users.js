@@ -3,6 +3,7 @@ import { pool } from "../db.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import adminMiddleware from "../middleware/adminMiddleware.js";
 import bcrypt from "bcrypt";
+import { logActivity } from "../utils/logger.js";
 
 const router = express.Router();
 const SALT_ROUNDS = 10;
@@ -47,6 +48,8 @@ router.post("/", [authMiddleware, adminMiddleware], async (req, res) => {
       "SELECT id, name, email, phone, role FROM users WHERE id = ?",
       [result.insertId]
     );
+
+    await logActivity(req.userId, "Created User", `User: ${email} (${role})`);
 
     res.status(201).json(rows[0]);
   } catch (err) {
@@ -98,6 +101,8 @@ router.put("/:id", [authMiddleware, adminMiddleware], async (req, res) => {
       [id]
     );
 
+    await logActivity(req.userId, "Updated User", `User ID: ${id}, Email: ${email}`);
+
     res.json(rows[0]);
   } catch (err) {
     console.error(err.message);
@@ -131,7 +136,11 @@ router.delete("/:id", [authMiddleware, adminMiddleware], async (req, res) => {
       return res.status(403).json({ message: "Access denied. You cannot delete this user." });
     }
 
+    const targetEmail = targetUser[0].email; // Assuming email is selected, if not this line will be skipped
     await pool.query("DELETE FROM users WHERE id = ?", [userId]);
+
+    await logActivity(req.userId, "Deleted User", `User ID: ${userId}`);
+
     res.json({ message: "User deleted successfully" });
   } catch (err) {
     res.status(500).send("Server Error");

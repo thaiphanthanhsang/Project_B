@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import api from "../../utils/api.js";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 const UserFormModal = ({ isOpen, onClose, user, onSave }) => {
+  const { user: loggedInUser } = useAuth();
   const isEditing = user !== null;
 
   const [formData, setFormData] = useState({
@@ -48,7 +50,7 @@ const UserFormModal = ({ isOpen, onClose, user, onSave }) => {
     if (isEditing && !formData.password) {
       delete dataToSubmit.password;
     } else if (!isEditing && !formData.password) {
-      alert("Khi thêm user mới, mật khẩu là bắt buộc.");
+      alert("Password is required when adding a new user.");
       setIsSubmitting(false);
       return;
     }
@@ -63,8 +65,8 @@ const UserFormModal = ({ isOpen, onClose, user, onSave }) => {
       onSave(response.data);
       onClose();
     } catch (err) {
-      console.error("Lỗi khi lưu user:", err);
-      alert(err.response?.data?.message || "Lưu thất bại!");
+      console.error("Error saving user:", err);
+      alert(err.response?.data?.message || "Save failed!");
     } finally {
       setIsSubmitting(false);
     }
@@ -78,12 +80,12 @@ const UserFormModal = ({ isOpen, onClose, user, onSave }) => {
         <button className="modal-close-btn" onClick={onClose}>
           &times;
         </button>
-        <h3>{isEditing ? "Chỉnh sửa người dùng" : "Thêm người dùng mới"}</h3>
+        <h3>{isEditing ? "Edit User" : "Add New User"}</h3>
 
         <form onSubmit={handleSubmit} className="admin-form">
           <div className="form-grid">
             <div className="form-group">
-              <label htmlFor="name">Tên (*)</label>
+              <label htmlFor="name">Name (*)</label>
               <input
                 type="text"
                 name="name"
@@ -106,7 +108,7 @@ const UserFormModal = ({ isOpen, onClose, user, onSave }) => {
 
             <div className="form-group">
               <label htmlFor="password">
-                Mật khẩu {isEditing ? "(Để trống nếu không đổi)" : "(*)"}
+                Password {isEditing ? "(Leave blank if no change)" : "(*)"}
               </label>
               <input
                 type="password"
@@ -117,15 +119,18 @@ const UserFormModal = ({ isOpen, onClose, user, onSave }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="role">Vai trò (*)</label>
+              <label htmlFor="role">Role (*)</label>
               <select name="role" value={formData.role} onChange={handleChange}>
                 <option value="user">user</option>
                 <option value="admin">admin</option>
+                {loggedInUser?.role === "superadmin" && (
+                  <option value="superadmin">superadmin</option>
+                )}
               </select>
             </div>
 
             <div className="form-group full-width">
-              <label htmlFor="phone">Số điện thoại</label>
+              <label htmlFor="phone">Phone Number</label>
               <input
                 type="text"
                 name="phone"
@@ -142,7 +147,7 @@ const UserFormModal = ({ isOpen, onClose, user, onSave }) => {
               onClick={onClose}
               disabled={isSubmitting}
             >
-              Hủy
+              Cancel
             </button>
             <button
               type="submit"
@@ -150,10 +155,10 @@ const UserFormModal = ({ isOpen, onClose, user, onSave }) => {
               disabled={isSubmitting}
             >
               {isSubmitting
-                ? "Đang lưu..."
+                ? "Saving..."
                 : isEditing
-                ? "Lưu thay đổi"
-                : "Thêm User"}
+                  ? "Save Changes"
+                  : "Add User"}
             </button>
           </div>
         </form>

@@ -23,6 +23,7 @@ import Checkout from "./pages/users/checkout";
 import { AdminNotificationProvider } from "./pages/admin/AdminNotificationContext.jsx";
 import MyOrders from "./pages/users/MyOrder";
 import NotificationHistoryPage from "./pages/admin/NotificationHistoryPage";
+import ActivityLogsPage from "./pages/admin/ActivityLogsPage";
 
 const routesWithMasterLayout = [
   {
@@ -104,6 +105,7 @@ const RouterCustom = () => {
         <Route path="products" element={<ProductManagementPage />} />
         <Route path="orders" element={<AdminOrdersPage />} />
         <Route path="notifications" element={<NotificationHistoryPage />} />
+        <Route path="activities" element={<ActivityLogsPage />} />
       </Route>
 
       {/* ===== USER ===== */}

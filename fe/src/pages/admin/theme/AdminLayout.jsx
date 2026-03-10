@@ -44,7 +44,9 @@ const AdminLayout = () => {
       try {
         const res = await api.get("/admin/orders/pending/count");
         setPendingOrders(res.data.total || 0);
-      } catch {}
+      } catch (err) {
+        console.error("Failed to fetch pending orders", err);
+      }
     };
 
     fetchPending();
@@ -52,7 +54,7 @@ const AdminLayout = () => {
     return () => clearInterval(i);
   }, [user, setPendingOrders]);
 
-  if (loading) return <p>Đang kiểm tra quyền truy cập...</p>;
+  if (loading) return <p>Checking access permissions...</p>;
   if (!user) return null;
 
   return (
@@ -62,7 +64,7 @@ const AdminLayout = () => {
 
         <ul>
           <li>
-            <Link to={`/${ROUTERS.ADMIN.DASHBOARD}`}>Tổng quan</Link>
+            <Link to={`/${ROUTERS.ADMIN.DASHBOARD}`}>Overview</Link>
           </li>
 
           <li>
@@ -82,12 +84,18 @@ const AdminLayout = () => {
             </Link>
           </li>
 
+          {user?.role === "superadmin" && (
+            <li>
+              <Link to={`/${ROUTERS.ADMIN.ACTIVITY_LOGS}`}>Activity Logs</Link>
+            </li>
+          )}
+
           {/* CHỈ THÊM – KHÔNG ẢNH HƯỞNG CÁI KHÁC */}
 
           <li className="divider" />
 
           <li>
-            <Link to={`/${ROUTERS.USER.HOME}`}>← Về Shop</Link>
+            <Link to={`/${ROUTERS.USER.HOME}`}>← Back to Shop</Link>
           </li>
         </ul>
       </nav>

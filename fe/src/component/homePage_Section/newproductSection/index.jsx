@@ -26,9 +26,9 @@ const NewProductSection = () => {
       setLoading(true);
       try {
         const params = new URLSearchParams();
-        
+
         if (activeTab !== "all") {
-             params.append("category", activeTab); 
+          params.append("category", activeTab);
         }
         params.append("limit", 15);
 
@@ -56,7 +56,7 @@ const NewProductSection = () => {
 
         {/* Categories Swiper */}
         <div className="mb-8">
-            <Swiper
+          <Swiper
             modules={[FreeMode]}
             slidesPerView="auto"
             spaceBetween={10}
@@ -64,55 +64,68 @@ const NewProductSection = () => {
             observer={true}
             observeParents={true}
             className="w-full"
-            >
+          >
             {categories.map((cat) => (
-                <SwiperSlide key={cat.id} style={{ width: "auto" }}>
+              <SwiperSlide key={cat.id} style={{ width: "auto" }}>
                 <button
-                    onClick={() => setActiveTab(cat.id)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+                  onClick={() => setActiveTab(cat.id)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap ${
                     activeTab === cat.id
-                        ? "bg-blue-600 text-white shadow-md"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
                 >
-                    {cat.name}
+                  {cat.name}
                 </button>
-                </SwiperSlide>
+              </SwiperSlide>
             ))}
-            </Swiper>
+          </Swiper>
         </div>
 
         {/* Products Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {loading ? (
-             <div className="col-span-full text-center py-8">Loading...</div>
+            <div className="col-span-full text-center py-8">Loading...</div>
           ) : (
-              products.map((product) => (
-                <div
-                  key={product.id}
-                  className="group bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300"
+            products.map((product) => (
+              <div
+                key={product.id}
+                className="group bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300"
+              >
+                <Link
+                  to={`/${ROUTERS.USER.PRODUCTS}/product-details/${product.id}`}
+                  className="block h-full"
                 >
-                  <Link to={`/${ROUTERS.USER.PRODUCTS}/product-details/${product.id}`} className="block h-full">
-                      <div className="relative aspect-square overflow-hidden bg-gray-50">
-                        <img
-                          src={product.imageUrl || product.image} // Handle both fields
-                          alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                      <div className="p-4">
-                        <h4 className="text-sm font-medium text-gray-800 line-clamp-2 h-10 mb-2 group-hover:text-blue-600 transition-colors">
-                          {product.name}
-                        </h4>
-                        <div className="text-blue-600 font-bold text-lg">
-                          {product.price?.toLocaleString()} đ
+                  <div className="relative aspect-square overflow-hidden bg-gray-50">
+                    <img
+                      src={product.imageUrl || product.image} // Handle both fields
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {product.originalPrice &&
+                      product.originalPrice > product.price && (
+                        <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-black px-2 py-1 rounded-md shadow-lg border border-red-400">
+                          -
+                          {Math.round(
+                            (1 - product.price / product.originalPrice) * 100,
+                          )}
+                          %
                         </div>
-                      </div>
-                  </Link>
-                </div>
-              ))
+                      )}
+                  </div>
+                  <div className="p-4">
+                    <h4 className="text-sm font-medium text-gray-800 line-clamp-2 h-10 mb-2 group-hover:text-blue-600 transition-colors">
+                      {product.name}
+                    </h4>
+                    <div className="text-blue-600 font-bold text-lg">
+                      {product.price?.toLocaleString()} đ
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))
           )}
-          
+
           {!loading && products.length === 0 && (
             <p className="col-span-full text-center text-gray-500 italic py-8">
               No products found in this category.

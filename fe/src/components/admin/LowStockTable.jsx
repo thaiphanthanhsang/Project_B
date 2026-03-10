@@ -77,7 +77,7 @@ const LowStockTable = ({ data }) => {
                     {product.category || "General"}
                   </td>
                   <td className="px-6 py-4 text-center text-sm font-semibold text-slate-700">
-                    {new Intl.NumberFormat("vi-VN", {
+                    {new Intl.NumberFormat("en-US", {
                       style: "currency",
                       currency: "VND",
                     }).format(product.price)}

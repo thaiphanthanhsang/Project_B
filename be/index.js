@@ -13,6 +13,7 @@ import ordersRouter from "./routes/orders.js";
 import adminNotifications from "./routes/adminNotifications.js"
 import dashboardRoutes from "./routes/dashboard.js";
 import chatRoutes from "./routes/chatBox.js";
+import activityRoutes from "./routes/activities.js";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/api/admin/notifications", adminNotifications);
 app.use("/api/dashboard", dashboardRoutes);
 
 app.use("/api/chat", chatRoutes);
+app.use("/api/activities", activityRoutes);
 
 
 

@@ -23,7 +23,7 @@ const ProductManagementPage = () => {
       const response = await api.get("/products");
       setProducts(response.data);
     } catch (err) {
-      console.error("Lỗi khi lấy danh sách sản phẩm:", err);
+      console.error("Error fetching product list:", err);
     }
     setLoading(false);
   };
@@ -40,7 +40,7 @@ const ProductManagementPage = () => {
       setProducts(products.filter((p) => p.id !== productToDelete));
     } catch (err) {
       console.error(err);
-      alert("Xóa thất bại!");
+      alert("Delete failed!");
     } finally {
       setDeleteModalOpen(false);
       setProductToDelete(null);
@@ -67,7 +67,7 @@ const ProductManagementPage = () => {
     }
   };
 
-  if (loading) return <p>Đang tải danh sách sản phẩm...</p>;
+  if (loading) return <p>Loading product list...</p>;
 
   return (
     <div>
@@ -78,10 +78,10 @@ const ProductManagementPage = () => {
           alignItems: "center",
         }}
       >
-        <h2>Quản lý Sản phẩm</h2>
+        <h2>Product Management</h2>
         <div className="admin-header-actions">
           <button className="btn-primary" onClick={handleCreate}>
-            + Thêm sản phẩm
+            + Add Product
           </button>
         </div>
       </div>
@@ -90,10 +90,13 @@ const ProductManagementPage = () => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Tên sản phẩm</th>
-            <th>Loại</th>
-            <th>Giá</th>
-            <th>Hành động</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Original Price</th>
+            <th>Discount</th>
+            <th>Quantity (Stock)</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -102,19 +105,39 @@ const ProductManagementPage = () => {
               <td>{product.id}</td>
               <td>{product.name}</td>
               <td>{product.category}</td>
-              <td>{product.price.toLocaleString("vi-VN")}₫</td>
+              <td>{product.price.toLocaleString("en-US")}₫</td>
+              <td>
+                {product.originalPrice
+                  ? `${product.originalPrice.toLocaleString("en-US")}₫`
+                  : "-"}
+              </td>
+              <td>
+                {product.originalPrice && product.originalPrice > product.price
+                  ? `${Math.round((1 - product.price / product.originalPrice) * 100)}%`
+                  : "-"}
+              </td>
+              <td>
+                <span
+                  style={{
+                    color: product.quantity > 0 ? "green" : "red",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {product.quantity > 0 ? product.quantity : "Out of stock"}
+                </span>
+              </td>
               <td>
                 <button
                   onClick={() => handleEdit(product)}
                   className="btn-edit"
                 >
-                  Sửa
+                  Edit
                 </button>
                 <button
                   onClick={() => handleDeleteClick(product.id)}
                   className="btn-delete"
                 >
-                  Xóa
+                  Delete
                 </button>
               </td>
             </tr>
@@ -133,10 +156,10 @@ const ProductManagementPage = () => {
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={confirmDelete}
-        title="Xóa sản phẩm"
-        message="Bạn có chắc chắn muốn xóa sản phẩm này? Hành động này không thể hoàn tác."
-        confirmText="Xóa"
-        cancelText="Hủy"
+        title="Delete Product"
+        message="Are you sure you want to delete this product? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
       />
     </div>
   );

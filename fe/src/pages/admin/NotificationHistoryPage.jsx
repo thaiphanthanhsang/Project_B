@@ -149,7 +149,7 @@ const NotificationHistoryPage = () => {
                     </h4>
                     <span className="text-xs text-slate-400 font-medium whitespace-nowrap">
                       {new Date(notification.created_at).toLocaleString(
-                        "vi-VN",
+                        "en-US",
                       )}
                     </span>
                   </div>

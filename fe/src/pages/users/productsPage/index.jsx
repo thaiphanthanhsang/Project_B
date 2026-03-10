@@ -89,6 +89,16 @@ const ProductPage = () => {
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
+                    {product.originalPrice &&
+                      product.originalPrice > product.price && (
+                        <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-black px-2 py-1 rounded-md shadow-lg border border-red-400">
+                          -
+                          {Math.round(
+                            (1 - product.price / product.originalPrice) * 100,
+                          )}
+                          %
+                        </div>
+                      )}
                   </div>
                   <div className="p-4">
                     <h3 className="text-sm font-medium text-gray-800 line-clamp-2 h-10 mb-2 group-hover:text-blue-600 transition-colors">
@@ -104,11 +114,11 @@ const ProductPage = () => {
           </div>
 
           <div className="mt-12 flex justify-center">
-             <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </div>
         </>
       ) : (

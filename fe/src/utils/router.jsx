@@ -21,5 +21,6 @@ export const ROUTERS = {
     PRODUCT_MANAGEMENT: "admin/products",
     ORDER_MANAGEMENT: "admin/orders",
     NOTIFICATIONS: "admin/notifications",
+    ACTIVITY_LOGS: "admin/activities",
   },
 };

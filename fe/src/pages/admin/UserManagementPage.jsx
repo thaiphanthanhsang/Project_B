@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import api from "../../utils/api.js";
 import UserFormModal from "./UserFormModal.jsx";
 import ConfirmationModal from "../../components/common/ConfirmationModal.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 const UserManagementPage = () => {
+  const { user: loggedInUser } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +28,7 @@ const UserManagementPage = () => {
       const response = await api.get("/users");
       setUsers(response.data);
     } catch (err) {
-      console.error("Lỗi khi lấy danh sách user:", err);
+      console.error("Error fetching users:", err);
     }
     setLoading(false);
   };
@@ -55,7 +57,7 @@ const UserManagementPage = () => {
       setEditingUserId(null);
     } catch (err) {
       console.error(err);
-      alert("Cập nhật thất bại!");
+      alert("Update failed!");
     }
   };
 
@@ -71,7 +73,7 @@ const UserManagementPage = () => {
       setUsers(users.filter((user) => user.id !== userToDelete));
     } catch (error) {
       console.error(error);
-      alert("Xóa thất bại!");
+      alert("Delete failed!");
     } finally {
       setDeleteModalOpen(false);
       setUserToDelete(null);
@@ -89,7 +91,7 @@ const UserManagementPage = () => {
     }
   };
 
-  if (loading) return <p>Đang tải danh sách...</p>;
+  if (loading) return <p>Loading users...</p>;
 
   return (
     <div>
@@ -100,10 +102,10 @@ const UserManagementPage = () => {
           alignItems: "center",
         }}
       >
-        <h2>Quản lý Người dùng</h2>
+        <h2>User Management</h2>
         <div className="admin-header-actions">
           <button className="btn-primary" onClick={handleCreate}>
-            + Thêm User
+            + Add User
           </button>
         </div>
       </div>
@@ -112,11 +114,11 @@ const UserManagementPage = () => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Tên</th>
+            <th>Name</th>
             <th>Email</th>
-            <th>Số điện thoại</th>
-            <th>Vai trò</th>
-            <th>Hành động</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -161,6 +163,9 @@ const UserManagementPage = () => {
                     >
                       <option value="user">user</option>
                       <option value="admin">admin</option>
+                      {loggedInUser?.role === "superadmin" && (
+                        <option value="superadmin">superadmin</option>
+                      )}
                     </select>
                   </td>
                   <td>
@@ -168,10 +173,10 @@ const UserManagementPage = () => {
                       onClick={() => handleSaveClick(user.id)}
                       className="btn-save"
                     >
-                      Lưu
+                      Save
                     </button>
                     <button onClick={handleCancelClick} className="btn-cancel">
-                      Hủy
+                      Cancel
                     </button>
                   </td>
                 </>
@@ -183,18 +188,24 @@ const UserManagementPage = () => {
                   <td>{user.phone || "N/A"}</td>
                   <td>{user.role}</td>
                   <td>
-                    <button
-                      onClick={() => handleEditClick(user)}
-                      className="btn-edit"
-                    >
-                      Sửa
-                    </button>
-                    <button
-                      onClick={() => handleDeleteClick(user.id)}
-                      className="btn-delete"
-                    >
-                      Xóa
-                    </button>
+                    {(loggedInUser?.role === "superadmin" ||
+                      user.role !== "superadmin") && (
+                      <button
+                        onClick={() => handleEditClick(user)}
+                        className="btn-edit"
+                      >
+                        Edit
+                      </button>
+                    )}
+                    {(loggedInUser?.role === "superadmin" ||
+                      user.role === "user") && (
+                      <button
+                        onClick={() => handleDeleteClick(user.id)}
+                        className="btn-delete"
+                      >
+                        Delete
+                      </button>
+                    )}
                   </td>
                 </>
               )}
@@ -214,10 +225,10 @@ const UserManagementPage = () => {
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={confirmDelete}
-        title="Xóa người dùng"
-        message="Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác."
-        confirmText="Xóa"
-        cancelText="Hủy"
+        title="Delete User"
+        message="Are you sure you want to delete this user? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
       />
     </div>
   );

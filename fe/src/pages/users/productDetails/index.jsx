@@ -4,7 +4,6 @@ import api from "../../../utils/api.js";
 import { useCart } from "../../../context/CartContext.jsx";
 import "./styles.css";
 
-
 const ProductDetails = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
@@ -159,12 +158,25 @@ const ProductDetails = () => {
     <div className="container py-4">
       <div className="row">
         {/* LEFT */}
-        <div className="col-md-5 text-center">
+        <div className="col-md-5 text-center position-relative">
           <img
             src={mainImage}
             alt={product.name}
             className="img-fluid big-img mb-3"
           />
+          {product.originalPrice && product.originalPrice > product.price && (
+            <div
+              className="position-absolute bg-danger text-white fw-bold px-2 py-1 rounded shadow"
+              style={{
+                top: "10px",
+                right: "20px",
+                fontSize: "0.9rem",
+                zIndex: 10,
+              }}
+            >
+              -{Math.round((1 - product.price / product.originalPrice) * 100)}%
+            </div>
+          )}
 
           {product.images && product.images.length > 0 && (
             <div className="d-flex justify-content-center gap-2 flex-wrap">
@@ -173,8 +185,7 @@ const ProductDetails = () => {
                   key={index}
                   src={img}
                   alt={`Image ${index + 1}`}
-                  className={`thumb-img ${mainImage === img ? "active" : ""
-                    }`}
+                  className={`thumb-img ${mainImage === img ? "active" : ""}`}
                   onClick={() => setMainImage(img)}
                 />
               ))}
@@ -188,18 +199,15 @@ const ProductDetails = () => {
 
           <p>
             Code:{" "}
-            <span className="text-danger fw-semibold">
-              {product.id || "—"}
-            </span>
+            <span className="text-danger fw-semibold">{product.id || "—"}</span>
             <br />
             Brand: <span className="fw-semibold">{product.brand}</span> |{" "}
             <span
-              className={`fw-semibold ${isOutOfStock ? "text-danger" : "text-success"
-                }`}
+              className={`fw-semibold ${
+                isOutOfStock ? "text-danger" : "text-success"
+              }`}
             >
-              {isOutOfStock
-                ? "Out of stock"
-                : `In stock (${product.quantity})`}
+              {isOutOfStock ? "Out of stock" : `In stock (${product.quantity})`}
             </span>
           </p>
 
@@ -207,8 +215,7 @@ const ProductDetails = () => {
             {product.price.toLocaleString()} ₫{" "}
             {product.originalPrice && (
               <span className="text-muted text-decoration-line-through ms-2">
-                Original Price:{" "}
-                {product.originalPrice.toLocaleString()} ₫
+                Original Price: {product.originalPrice.toLocaleString()} ₫
               </span>
             )}
           </p>
@@ -221,8 +228,9 @@ const ProductDetails = () => {
                 {product.colors.map((color, i) => (
                   <div
                     key={i}
-                    className={`color-box ${selectedColor?.name === color.name ? "active" : ""
-                      }`}
+                    className={`color-box ${
+                      selectedColor?.name === color.name ? "active" : ""
+                    }`}
                     onClick={() => {
                       setSelectedColor(color);
                       setMainImage(color.img || product.imageUrl);
@@ -232,9 +240,7 @@ const ProductDetails = () => {
                     <div className="color-info">
                       <span>{color.name}</span>
                       <br />
-                      <strong>
-                        {color.price.toLocaleString()} ₫
-                      </strong>
+                      <strong>{color.price.toLocaleString()} ₫</strong>
                     </div>
                   </div>
                 ))}
@@ -250,8 +256,9 @@ const ProductDetails = () => {
                 {product.sizes.map((size, i) => (
                   <button
                     key={i}
-                    className={`btn btn-outline-secondary size-btn ${selectedSize === size ? "active" : ""
-                      }`}
+                    className={`btn btn-outline-secondary size-btn ${
+                      selectedSize === size ? "active" : ""
+                    }`}
                     onClick={() => setSelectedSize(size)}
                   >
                     {size}
