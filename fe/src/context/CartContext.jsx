@@ -15,12 +15,12 @@ export const CartProvider = ({ children }) => {
     if (savedCart) {
       setCartItems(JSON.parse(savedCart));
     }
-  }, []); 
+  }, []);
 
   const addToCart = (productToAdd) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
-        (item) => item.variantKey === productToAdd.variantKey
+        (item) => item.variantKey === productToAdd.variantKey,
       );
       let newCart;
 
@@ -28,7 +28,7 @@ export const CartProvider = ({ children }) => {
         newCart = prevItems.map((item) =>
           item.variantKey === productToAdd.variantKey
             ? { ...item, quantity: item.quantity + 1 }
-            : item
+            : item,
         );
       } else {
         newCart = [...prevItems, productToAdd];
@@ -42,7 +42,7 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = (variantKey) => {
     setCartItems((prevItems) => {
       const newCart = prevItems.filter(
-        (item) => item.variantKey !== variantKey
+        (item) => item.variantKey !== variantKey,
       );
       saveCartToStorage(newCart);
       return newCart;
@@ -66,15 +66,27 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+    saveCartToStorage([]);
+  };
+
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, updateQuantity }}
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+      }}
     >
       {children}
     </CartContext.Provider>
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCart = () => {
   return useContext(CartContext);
 };

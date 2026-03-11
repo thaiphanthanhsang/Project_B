@@ -82,48 +82,81 @@ const NewProductSection = () => {
           </Swiper>
         </div>
 
-        {/* Products Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {loading ? (
             <div className="col-span-full text-center py-8">Loading...</div>
           ) : (
-            products.map((product) => (
-              <div
-                key={product.id}
-                className="group bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300"
-              >
-                <Link
-                  to={`/${ROUTERS.USER.PRODUCTS}/product-details/${product.id}`}
-                  className="block h-full"
+            products.map((product) => {
+              let parsedImages = [];
+              try {
+                parsedImages =
+                  typeof product.images === "string"
+                    ? JSON.parse(product.images)
+                    : product.images || [];
+              } catch {
+                parsedImages = [];
+              }
+              return (
+                <div
+                  key={product.id}
+                  className="group bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300"
                 >
-                  <div className="relative aspect-square overflow-hidden bg-gray-50">
-                    <img
-                      src={product.imageUrl || product.image} // Handle both fields
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    {product.originalPrice &&
-                      product.originalPrice > product.price && (
-                        <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-black px-2 py-1 rounded-md shadow-lg border border-red-400">
-                          -
-                          {Math.round(
-                            (1 - product.price / product.originalPrice) * 100,
-                          )}
-                          %
-                        </div>
+                  <Link
+                    to={`/${ROUTERS.USER.PRODUCTS}/product-details/${product.id}`}
+                    className="block h-full"
+                  >
+                    <div className="relative aspect-square overflow-hidden bg-gray-50">
+                      <img
+                        src={product.imageUrl || product.image} // Handle both fields
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      {parsedImages.length > 0 && (
+                        <img
+                          src={
+                            parsedImages[0] !==
+                            (product.imageUrl || product.image)
+                              ? parsedImages[0]
+                              : parsedImages[1] || parsedImages[0]
+                          }
+                          alt={`${product.name} hover`}
+                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+                          onError={({ currentTarget }) => {
+                            currentTarget.style.display = "none";
+                          }}
+                        />
                       )}
-                  </div>
-                  <div className="p-4">
-                    <h4 className="text-sm font-medium text-gray-800 line-clamp-2 h-10 mb-2 group-hover:text-blue-600 transition-colors">
-                      {product.name}
-                    </h4>
-                    <div className="text-blue-600 font-bold text-lg">
-                      {product.price?.toLocaleString()} đ
+                      {product.originalPrice &&
+                        product.originalPrice > product.price && (
+                          <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-black px-2 py-1 rounded-md shadow-lg border border-red-400">
+                            -
+                            {Math.round(
+                              (1 - product.price / product.originalPrice) * 100,
+                            )}
+                            %
+                          </div>
+                        )}
                     </div>
-                  </div>
-                </Link>
-              </div>
-            ))
+                    <div className="p-4">
+                      <h4 className="text-sm font-medium text-gray-800 line-clamp-2 h-10 mb-2 group-hover:text-blue-600 transition-colors">
+                        {product.name}
+                      </h4>
+                      <div className="flex flex-col">
+                        {product.originalPrice &&
+                          product.originalPrice > product.price && (
+                            <span className="text-xs text-gray-400 line-through">
+                              {product.originalPrice?.toLocaleString()} đ
+                            </span>
+                          )}
+                        <div className="text-blue-600 font-bold text-lg">
+                          {product.price?.toLocaleString()} đ
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              );
+            })
           )}
 
           {!loading && products.length === 0 && (

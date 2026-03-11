@@ -59,103 +59,129 @@ const BestSellers = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((product, index) => (
-            <div
-              key={product.id}
-              className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 relative"
-            >
-              {/* Badger */}
-              <div className="absolute top-4 left-4 z-10 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
-                <Flame size={12} fill="white" /> #{index + 1}
-              </div>
+          {products.map((product, index) => {
+            let parsedImages = [];
+            try {
+              parsedImages =
+                typeof product.images === "string"
+                  ? JSON.parse(product.images)
+                  : product.images || [];
+            } catch {
+              parsedImages = [];
+            }
 
-              {/* Discount Badge */}
-              {product.originalPrice &&
-                product.originalPrice > product.price && (
-                  <div className="absolute top-4 right-4 z-10 bg-red-600 text-white text-xs font-black px-2 py-1 rounded-md shadow-lg border border-red-400">
-                    -
-                    {Math.round(
-                      (1 - product.price / product.originalPrice) * 100,
-                    )}
-                    %
-                  </div>
-                )}
-
-              {/* Image Config */}
-              <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
-                <Link to={`/product/product-details/${product.id}`}>
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src =
-                        "https://via.placeholder.com/400x500?text=No+Image";
-                    }}
-                  />
-                </Link>
-
-                {/* Quick Action Overlay */}
-                <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-center">
-                  <Link
-                    to={`/product/product-details/${product.id}`}
-                    className="w-full bg-white text-gray-900 font-bold py-3 rounded-xl shadow-lg hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2"
-                  >
-                    <ShoppingCart size={18} /> View Details
-                  </Link>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-5">
-                <div className="flex items-center gap-1 mb-2">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star
-                      key={s}
-                      size={14}
-                      className="fill-amber-400 text-amber-400"
-                    />
-                  ))}
-                  <span className="text-xs text-gray-400 ml-1">
-                    ({product.sold_count} sold)
-                  </span>
+            return (
+              <div
+                key={product.id}
+                className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 relative"
+              >
+                {/* Badger */}
+                <div className="absolute top-4 left-4 z-10 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
+                  <Flame size={12} fill="white" /> #{index + 1}
                 </div>
 
-                <h3 className="font-bold text-gray-900 mb-2 truncate group-hover:text-blue-600 transition-colors">
-                  <Link to={`/product/product-details/${product.id}`}>
-                    {product.name}
-                  </Link>
-                </h3>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-col">
-                    {product.originalPrice &&
-                      product.originalPrice > product.price && (
-                        <span className="text-xs text-gray-400 line-through">
-                          {new Intl.NumberFormat("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
-                          }).format(product.originalPrice)}
-                        </span>
+                {/* Discount Badge */}
+                {product.originalPrice &&
+                  product.originalPrice > product.price && (
+                    <div className="absolute top-4 right-4 z-10 bg-red-600 text-white text-xs font-black px-2 py-1 rounded-md shadow-lg border border-red-400">
+                      -
+                      {Math.round(
+                        (1 - product.price / product.originalPrice) * 100,
                       )}
-                    <span className="text-lg font-bold text-blue-600">
-                      {new Intl.NumberFormat("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }).format(product.price)}
+                      %
+                    </div>
+                  )}
+
+                {/* Image Config */}
+                <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
+                  <Link to={`/product/product-details/${product.id}`}>
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "https://via.placeholder.com/400x500?text=No+Image";
+                      }}
+                    />
+                    {parsedImages.length > 0 && (
+                      <img
+                        src={
+                          parsedImages[0] !== product.imageUrl
+                            ? parsedImages[0]
+                            : parsedImages[1] || parsedImages[0]
+                        }
+                        alt={`${product.name} hover`}
+                        className="absolute inset-0 w-full h-full object-cover object-center opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
+                        onError={({ currentTarget }) => {
+                          currentTarget.style.display = "none";
+                        }}
+                      />
+                    )}
+                  </Link>
+
+                  {/* Quick Action Overlay */}
+                  <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-center">
+                    <Link
+                      to={`/product/product-details/${product.id}`}
+                      className="w-full bg-white text-gray-900 font-bold py-3 rounded-xl shadow-lg hover:bg-black hover:text-white transition-colors flex items-center justify-center gap-2"
+                    >
+                      <ShoppingCart size={18} /> View Details
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-5">
+                  <div className="flex items-center gap-1 mb-2">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        size={14}
+                        className="fill-amber-400 text-amber-400"
+                      />
+                    ))}
+                    <span className="text-xs text-gray-400 ml-1">
+                      ({product.sold_count} sold)
                     </span>
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
-                    <ArrowRight
-                      size={16}
-                      className="text-gray-400 group-hover:text-blue-600"
-                    />
+
+                  <h3 className="font-bold text-gray-900 mb-2 truncate group-hover:text-blue-600 transition-colors">
+                    <Link to={`/product/product-details/${product.id}`}>
+                      {product.name}
+                    </Link>
+                  </h3>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex flex-col">
+                      {product.originalPrice &&
+                        product.originalPrice > product.price && (
+                          <span className="text-xs text-gray-400 line-through">
+                            {new Intl.NumberFormat("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            }).format(product.originalPrice)}
+                          </span>
+                        )}
+                      <span className="text-lg font-bold text-blue-600">
+                        {new Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(product.price)}
+                      </span>
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
+                      <ArrowRight
+                        size={16}
+                        className="text-gray-400 group-hover:text-blue-600"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

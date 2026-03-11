@@ -1,5 +1,6 @@
 import { memo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Truck,
@@ -15,10 +16,12 @@ import {
 } from "lucide-react";
 import api from "../../../utils/api";
 import NeuToast from "../../../component/common/NeuToast";
+import { useCart } from "../../../context/CartContext";
 
 const Checkout = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { clearCart } = useCart();
 
   const cartItems = state?.cartItems || [];
 
@@ -44,7 +47,7 @@ const Checkout = () => {
   // Calculate Totals
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0
+    0,
   );
 
   const discount = appliedVoucher ? subtotal * 0.1 : 0; // Mock 10% for SQB10
@@ -132,6 +135,10 @@ const Checkout = () => {
 
       setOrderId(createdOrderId);
 
+      if (state?.from === "cart") {
+        clearCart();
+      }
+
       // Nếu bank transfer → show QR
       if (paymentMethod === "BANKING") {
         setShowQR(true);
@@ -151,7 +158,7 @@ const Checkout = () => {
 
       showToast(
         err.response?.data?.message || "Invalid OTP or checkout failed",
-        "error"
+        "error",
       );
     } finally {
       setIsSubmitting(false);
@@ -361,7 +368,7 @@ const Checkout = () => {
 
                   <img
                     src={`https://img.vietqr.io/image/VCB-1054957071-compact2.png?amount=${finalTotal}&addInfo=${encodeURIComponent(
-                      `ORDER_${orderId}`
+                      `ORDER_${orderId}`,
                     )}`}
                     alt="QR Code"
                     className="w-56 mx-auto"
@@ -370,7 +377,7 @@ const Checkout = () => {
                     onClick={() => {
                       showToast(
                         "Payment submitted! We will verify it soon.",
-                        "success"
+                        "success",
                       );
                       navigate("/");
                     }}
@@ -428,6 +435,8 @@ const Checkout = () => {
                   <div className="relative flex-1 group">
                     <Ticket className="absolute left-3 top-3 w-4 h-4 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
                     <input
+                      id="voucherCode"
+                      name="voucherCode"
                       value={voucherCode}
                       onChange={(e) => setVoucherCode(e.target.value)}
                       placeholder="Try 'SQB10'"
@@ -555,6 +564,8 @@ const Checkout = () => {
 
                 <div className="flex justify-center mb-8">
                   <input
+                    id="otp"
+                    name="otp"
                     type="text"
                     maxLength={6}
                     value={otp}

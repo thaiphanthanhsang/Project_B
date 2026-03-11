@@ -1,7 +1,16 @@
 import React from "react";
 import { Package, AlertTriangle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const LowStockTable = ({ data }) => {
+  const navigate = useNavigate();
+
+  const getImageUrl = (url) => {
+    if (!url) return "";
+    if (url.startsWith("http")) return url;
+    const cleanUrl = url.replace(/\\/g, "/");
+    return `http://localhost:5000${cleanUrl.startsWith("/") ? "" : "/"}${cleanUrl}`;
+  };
   return (
     <div className="rounded-xl border border-slate-100 bg-white shadow-sm overflow-hidden">
       <div className="px-6 py-5 border-b border-slate-50 flex justify-between items-center bg-white">
@@ -50,7 +59,7 @@ const LowStockTable = ({ data }) => {
                       <div className="h-10 w-10 flex-shrink-0 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden">
                         {product.imageUrl ? (
                           <img
-                            src={`http://localhost:5000${product.imageUrl}`}
+                            src={getImageUrl(product.imageUrl)}
                             alt=""
                             className="h-full w-full object-cover"
                           />
@@ -95,7 +104,10 @@ const LowStockTable = ({ data }) => {
                     )}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button className="text-indigo-600 hover:text-indigo-800 text-sm font-bold hover:underline transition-all">
+                    <button
+                      onClick={() => navigate("/admin/products")}
+                      className="text-indigo-600 hover:text-indigo-800 text-sm font-bold hover:underline transition-all"
+                    >
                       Restock
                     </button>
                   </td>

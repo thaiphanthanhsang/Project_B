@@ -157,7 +157,7 @@ const RevenueChart = ({ data = [] }) => {
 
         {/* Chart */}
         <div className="flex-1 w-full min-h-[350px] relative z-10 mt-4">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minHeight={350}>
             <AreaChart
               data={filteredData}
               margin={{ top: 20, right: 0, left: 0, bottom: 0 }}
